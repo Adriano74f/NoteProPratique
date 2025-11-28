@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\PreviousPasswords;
 use App\Entity\Student;
 use App\Form\StudentType;
+use App\Repository\GradeRepository;
 use App\Repository\StudentRepository;
 use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -103,26 +104,16 @@ class StudentController extends AbstractController
         return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/notes', name: 'app_student_notes', methods: ['GET', 'POST'])]
-    public function notes(Student $student, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/notes', name: 'app_student_notes', methods: ['GET'])]
+    public function notes(Student $student, GradeRepository $gradeRepository, SubjectRepository $subjectRepo): Response
     {
+        $grades = $gradeRepository->findVisibleNotes($student->getId());
+        $subjects = $subjectRepo->findAll();
 
         return $this->render('student/mygrades.html.twig', [
             'student' => $student,
-            'grades' => $student->getGrades()
-
-        ]);
-    }
-
-    #[Route('/moyennes', name: 'app_student_moyennes')]
-    public function grades(SubjectRepository $subjectRepo): Response
-    {
-        $student = $this->getUser(); // étudiant connecté
-        $subjects = $subjectRepo->findAll(); // toutes les matières
-
-        return $this->render('student/moyennes.html.twig', [
-            'student' => $student,
-            'subjects' => $subjects
+            'grades' => $grades,
+            'subjects' => $subjects,
         ]);
     }
 }

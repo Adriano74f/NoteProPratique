@@ -5,6 +5,24 @@
 {% block body %}
     <h1>Notes de {{ app.user.name }}</h1>
 
+    <h2>Moyennes par matière</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Matière</th>
+            <th>Moyenne</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>
+                <td>{{ student.getAverageBySubject(subject) }}/20</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <table class="table">
         <thead>
         <tr>

@@ -75,22 +75,29 @@ class Student extends User
         return null;
     }
 
-    public function getAverageBySubject(Subject $subject): float
+    public function getAverageBySubject(\App\Entity\Subject $subject): float
     {
         $total = 0;
         $count = 0;
 
-        foreach ($this->getGrades() as $grades) {
-            if ($grades->getSubject() === $subject) {
-                $total += $grades->getValue();
-                $count++;
+        foreach ($this->grades as $grade) {
+            $evaluation = $grade->getEvaluation();
+            if ($evaluation->getSubject() === $subject) {
+                $bareme = $evaluation->getBareme();
+                if ($bareme > 0) {
+                    // normalisation de la note sur 20
+                    $normalizedGrade = ($grade->getGrade() / $bareme) * 20;
+                    $total += $normalizedGrade;
+                    $count++;
+                }
             }
         }
 
         if ($count === 0) {
-            return 0;
+            return 0.0;
         }
 
         return round($total / $count, 2);
     }
+
 }
