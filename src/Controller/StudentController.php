@@ -6,6 +6,7 @@ use App\Entity\PreviousPasswords;
 use App\Entity\Student;
 use App\Form\StudentType;
 use App\Repository\StudentRepository;
+use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,6 +111,18 @@ class StudentController extends AbstractController
             'student' => $student,
             'grades' => $student->getGrades()
 
+        ]);
+    }
+
+    #[Route('/moyennes', name: 'app_student_moyennes')]
+    public function grades(SubjectRepository $subjectRepo): Response
+    {
+        $student = $this->getUser(); // étudiant connecté
+        $subjects = $subjectRepo->findAll(); // toutes les matières
+
+        return $this->render('student/moyennes.html.twig', [
+            'student' => $student,
+            'subjects' => $subjects
         ]);
     }
 }

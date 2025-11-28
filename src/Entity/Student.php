@@ -74,4 +74,23 @@ class Student extends User
         }
         return null;
     }
+
+    public function getAverageBySubject(Subject $subject): float
+    {
+        $total = 0;
+        $count = 0;
+
+        foreach ($this->getGrades() as $grades) {
+            if ($grades->getSubject() === $subject) {
+                $total += $grades->getValue();
+                $count++;
+            }
+        }
+
+        if ($count === 0) {
+            return 0;
+        }
+
+        return round($total / $count, 2);
+    }
 }

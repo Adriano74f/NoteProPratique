@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Moyennes{% endblock %}
+
+{% block body %}
+    <h1>Moyennes de {{ student.name }}</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Matière</th>
+            <th scope="col">Moyenne</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>
+                <td>{{ student.getAverageBySubject(subject) }}/20</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
