@@ -40,6 +40,9 @@ class Evaluation
     #[ORM\OneToMany(mappedBy: 'evaluation', targetEntity: Grade::class, orphanRemoval: true)]
     private Collection $grades;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateAffichage = null;
+
     public function __construct()
     {
         $this->grades = new ArrayCollection();
@@ -161,4 +164,16 @@ class Evaluation
         }
         return null;
     }
+
+    public function getDateAffichage(): ?\DateTimeInterface
+    {
+        return $this->dateAffichage;
+    }
+
+    public function setDateAffichage(\DateTimeInterface $dateAffichage): self
+    {
+        $this->dateAffichage = $dateAffichage;
+        return $this;
+    }
+
 }

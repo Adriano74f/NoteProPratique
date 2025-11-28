@@ -61,6 +61,10 @@ class EvaluationType extends AbstractType
                     return $er->findByProfessor($prof);
                 },
             ])
+            ->add('dateAffichage', DateType::class, [
+                'label' => "Date d'affichage des notes",
+                'widget' => 'single_text'
+            ])
         ;
     }
 
